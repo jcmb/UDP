@@ -106,7 +106,6 @@ def process(in_sock,out_sock,IP,PORT,Dots):
        try:
           data, addr = in_sock.recvfrom(1024) # buffer size is 1024 bytes
           received_time=datetime.datetime.now()
-          data=data+str(received_time)
           Packets_In+=1
           if Verbose>=1:
              sys.stderr.write("Received message # "+str(Packets_In)+" : bytes (" + str(len (data)) + ") from " + addr[0] + " at " +str(received_time) +"\n")
