@@ -5,23 +5,27 @@ import sys
 import pprint
 import argparse
 import datetime
+import binascii
 
 UDP_IP = "0.0.0.0"
 UDP_PORT = 2101
 
 
-parser = argparse.ArgumentParser(description="Simple UDP Packet broadcaster that sends the current time",
+parser = argparse.ArgumentParser(description="Simple UDP Packet receiver that outputs to StdOut.",
 epilog="V1.0 (c) JCMBsoft 2016");
-parser.add_argument("-i","--Source_IP",default="",help="Source of UDP packets, leave blank for broadcast")
+#parser.add_argument("-i","--Source_IP",default="",help="Source of UDP packets, leave blank for broadcast",type=str)
 parser.add_argument("-p","--Source_Port",default=2101,help="Source port of UDP packets. Default 2101",type=int)
 parser.add_argument("-T","--Tell", action='store_true',help="Tell the settings before starting")
-parser.add_argument("-V","--Verbose", action='count',help="Display information on incomming -v, and outgoing -vv packets")
+parser.add_argument("-v","--Verbose", action='count',help="Display information on incomming -v, and outgoing -vv packets")
+parser.add_argument("-H","--Hex", action='store_true',help="Display packet information in hex")
 
 args = parser.parse_args()
 
-UDP_RECV_IP=args.Source_IP
+#UDP_RECV_IP=args.Source_IP
+UDP_RECV_IP=""
 UDP_RECV_PORT=args.Source_Port
 Verbose=args.Verbose
+Hex=args.Hex
 
 
 if args.Tell:
@@ -38,15 +42,22 @@ sock.bind((UDP_RECV_IP, UDP_RECV_PORT))
 Packets_In=0
 start_time=datetime.datetime.now()
 
+data=None
 while True:
    try:
       data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
       Packets_In+=1
       if Verbose:
-         sys.stderr.write("Packet: {} From Address: {}:{}\n".format(Packets_In,addr[0],addr[1]))
+         sys.stderr.write("\nPacket: {} From Address: {}:{} at {}\n".format(Packets_In,addr[0],addr[1],datetime.datetime.now()))
+         sys.stderr.flush()
 
-      sys.stdout.write(data)
+      if Hex:
+         sys.stdout.write(binascii.hexlify(data))
+      else:
+         sys.stdout.write(data)
+         
       sys.stdout.flush()
+      
    except KeyboardInterrupt:
       sys.stderr.write( "\n")
       sys.stderr.write("Received: {} packets in {}\n".format(Packets_In,datetime.datetime.now()-start_time))
