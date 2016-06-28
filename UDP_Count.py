@@ -51,7 +51,12 @@ if args.Tell:
 
 sock = socket.socket(socket.AF_INET, # Internet
                      socket.SOCK_DGRAM) # UDP
-sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+                     
+try:   #This fails on the Raspberry Pi for an unknown reason so we just ignore it
+   sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+except:
+   pass
+   
 sock.bind((UDP_RECV_IP, UDP_RECV_PORT))
 sock.setblocking(0)
 
