@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(description="Count Number of UDP Packets that a
 epilog="V1.0 (c) JCMBsoft 2016");
 #parser.add_argument("-i","--Source_IP",default="",help="Source of UDP packets, leave blank for broadcast")
 parser.add_argument("-p","--Source_Port",default=2101,help="Source port of UDP packets. Default 2101",type=int)
-parser.add_argument("-t","--time", default=20,help="Number of seconds to count packets for")
+parser.add_argument("-t","--time", default=20,type=int,help="Number of seconds to count packets for")
 
 parser.add_argument('--nagios', action='store_true',
                 help='Return information in a way suitable for Nagios monitoring')
@@ -69,13 +69,13 @@ while current_time<=end_time:
 
    try:
       try:
-         data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+         data, addr = sock.recvfrom(65535) # buffer size is 65535 bytes, which means that we will get all of the packet in one go. 
       except :
          sleep(0.001) # We check for packets around 100 times a second. Without this we peg the CPU which is rude
          continue
       Packets_In+=1
       if Verbose:
-         sys.stderr.write("Packet: {} From Address: {}:{} at {}\n".format(Packets_In,addr[0],addr[1],datetime.datetime.now()))
+         sys.stderr.write("Packet: {} From Address: {}:{} at {}. Size: {}\n".format(Packets_In,addr[0],addr[1],datetime.datetime.now(),len(data)))
 
 #      sys.stdout.write(data)
 #      sys.stdout.flush()
