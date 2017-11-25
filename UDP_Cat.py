@@ -57,6 +57,7 @@ while True:
 
       if Hex:
          sys.stdout.write(binascii.hexlify(data))
+         sys.stdout.write("\n")
       else:
          sys.stdout.write(data)
          
