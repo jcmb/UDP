@@ -12,7 +12,7 @@ UDP_PORT = 2101
 
 
 parser = argparse.ArgumentParser(description="Simple UDP Packet receiver that outputs packet length to stdout.",
-epilog="V1.0 (c) JCMBsoft 2016");
+epilog="V2.0 (c) JCMBsoft 2021");
 #parser.add_argument("-i","--Source_IP",default="",help="Source of UDP packets, leave blank for broadcast",type=str)
 parser.add_argument("-p","--Source_Port",default=2101,help="Source port of UDP packets. Default 2101",type=int)
 parser.add_argument("-T","--Tell", action='store_true',help="Tell the settings before starting")
