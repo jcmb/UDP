@@ -29,7 +29,7 @@ parser.add_argument(
     help="Source port of UDP packets. Default 2101",
     type=int,
 )
-parser.add_argument("--Client", help="Client Connection", type=bool)
+parser.add_argument("-c", "--Client", help="Client Connection", action="store_true")
 parser.add_argument(
     "-T", "--Tell", action="store_true", help="Tell the settings before starting"
 )
@@ -79,29 +79,22 @@ Packets_In = 0
 start_time = datetime.datetime.now()
 
 if Client:
-    # Create a UDP socket
-    send_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
     # Message to send
     message = "Hello, UDP!"
 
     try:
         # Send the message
-        send_sock.sendto(message.encode("utf-8"), (UDP_RECV_IP, UDP_RECV_PORT))
-        print(f"Message sent to {target_ip}:{target_port}")
-    finally:
-        # Close the socket
-        send_sock.close()
+        sock.sendto(message.encode("utf-8"), (UDP_RECV_IP, UDP_RECV_PORT))
+        print(f"Message sent to {UDP_RECV_IP}:{UDP_RECV_PORT}")
+    except:
+        print(f"Message NOT sent to {UDP_RECV_IP}:{UDP_RECV_PORT}")
 
 
 data = None
 while True:
     try:
         data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
-        if UDP_RECV_IP:
-            if (addr[0]) != UDP_RECV_IP:
-                continue
-        Packets_In += 1
+
         if Verbose:
             sys.stderr.write(
                 "\nPacket: {} From Address: {}:{} at {}\n".format(
@@ -109,6 +102,13 @@ while True:
                 )
             )
             sys.stderr.flush()
+
+        if UDP_RECV_IP:
+            if (addr[0]) != UDP_RECV_IP:
+                continue
+
+        Packets_In += 1
+
 
         if Hex:
             sys.stdout.write("\n")
