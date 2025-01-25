@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import socket
 import sys
@@ -95,19 +95,19 @@ if not args.nagios:
 
 # Here we are reporting out for Nagios only
 if Packets_In<=args.critical:
-   print "CRITICAL - Not enough packets {}, threshold {}".format(Packets_In,str(args.critical))
+   print("CRITICAL - Not enough packets {}, threshold {}".format(Packets_In,str(args.critical)))
    sys.exit(2)
 
 if Packets_In<=args.warning:
-   print "WARNING - Not enough packets {}, threshold {}".format(Packets_In,str(args.warning))
+   print("WARNING - Not enough packets {}, threshold {}".format(Packets_In,str(args.warning)))
    sys.exit(1)
 
 if args.high_critical and Packets_In>=args.high_critical:
-   print "CRITICAL - Too many packets {}, threshold {}".format(Packets_In,str(args.high_critical))
+   print("CRITICAL - Too many packets {}, threshold {}".format(Packets_In,str(args.high_critical)))
    sys.exit(2)
 
 if args.high_warning and Packets_In>=args.high_warning:
-   print "warning - Too many packets {}, threshold {}".format(Packets_In,str(args.high_warning))
+   print("warning - Too many packets {}, threshold {}".format(Packets_In,str(args.high_warning)))
    sys.exit(1)
 
-print "OK - {}, in {} seconds".format(Packets_In,str(Test_Time))
+print("OK - {}, in {} seconds".format(Packets_In,str(Test_Time)))
