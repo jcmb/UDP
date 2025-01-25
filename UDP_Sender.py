@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import socket
 import datetime
@@ -49,6 +49,7 @@ start_time=datetime.datetime.now()
 while True:
    try:
       MESSAGE=str(datetime.datetime.now())+"\n"
+      MESSAGE=MESSAGE.encode('utf-8')
       sock.sendto(MESSAGE, (UDP_TRAN_IP, UDP_TRAN_PORT))
       Packets_Out+=1
       if Verbose:
@@ -63,16 +64,16 @@ while True:
                if Packets_In % 100==0:
                    sys.stderr.write ("\n")
             else:
-               print("received message: %s" % data)
+               print(("received message: %s" % data))
 
 
       except socket.error:
           pass
       sleep(Packet_Every)
    except KeyboardInterrupt:
-      print ""
-      print "Sent: {} packets in {}".format(Packets_Out,datetime.datetime.now()-start_time)
-      print ""
+      print("")
+      print("Sent: {} packets in {}".format(Packets_Out,datetime.datetime.now()-start_time))
+      print("")
       sys.exit(0)
    except:
       raise
